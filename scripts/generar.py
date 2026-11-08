@@ -10,7 +10,7 @@ import sys
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from web import RAIZ, Sitio, ICO, esc, datos, mailto  # noqa: E402
+from web import RAIZ, Sitio, ICO, esc, datos, mailto, foto, imagen, portada_foto  # noqa: E402
 
 CORREO = "hola@naroeconsulting.com"
 PALETA = ["#DB3E4C", "#F69178", "#F4CF70", "#36A693", "#3257A8", "#8B3D88", "#E5A9C9", "#937465", "#969696"]
@@ -41,6 +41,57 @@ def franja():
     return '<div class="franja" aria-hidden="true">' + "".join(f'<i style="background:{c}"></i>' for c in PALETA) + "</div>"
 
 
+# ---- Gráficas (SVG generado aquí; datos de EJEMPLO, se rotulan como tales) ----
+EJ_SOPORTES = [("Prensa y medios digitales", 11800), ("Televisión", 9400), ("Redes sociales", 7600),
+               ("Radio", 5200), ("Publicidad exterior", 4100), ("Web y newsletter", 1900)]
+EJ_IMPACTO = [("Gasto del público", 58, "#3257A8"), ("Gasto de la organización", 27, "#36A693"), ("Efecto inducido", 15, "#F4CF70")]
+
+
+def miles(n):
+    return f"{n:,.0f}".replace(",", ".")
+
+
+def barras(datos, titulo):
+    """Barras horizontales en HTML (se leen bien con lector de pantalla y en móvil)."""
+    mx = max(v for _, v in datos)
+    filas = "".join(f'''<li><span class="b-et">{esc(et)}</span><span class="b-val">{miles(v)} €</span>
+      <span class="b-pista" aria-hidden="true"><i style="width:{round(v / mx * 100, 1)}%;background:{PALETA[[4, 0, 3, 5, 1, 7][k % 6]]}"></i></span></li>'''
+                    for k, (et, v) in enumerate(datos))
+    return f'''<figure class="grafica">
+  <figcaption>{esc(titulo)}</figcaption>
+  <ul class="g-barras">{filas}</ul>
+</figure>'''
+
+
+def donut(datos, titulo, centro):
+    r, c = 70, 2 * 3.14159 * 70
+    acum, arcos = 0, ""
+    for _, pct, color in datos:
+        largo = c * pct / 100
+        arcos += (f'<circle r="{r}" cx="90" cy="90" fill="none" stroke="{color}" stroke-width="30" '
+                  f'stroke-dasharray="{largo:.1f} {c:.1f}" stroke-dashoffset="{-acum:.1f}" transform="rotate(-90 90 90)"/>')
+        acum += largo
+    ley = "".join(f'<li><i style="background:{col}"></i><span>{esc(e)}</span><strong>{p} %</strong></li>' for e, p, col in datos)
+    return f'''<figure class="grafica grafica-donut">
+  <figcaption>{esc(titulo)}</figcaption>
+  <div class="donut-fila"><svg viewBox="0 0 180 180" aria-hidden="true" focusable="false">{arcos}
+    <text x="90" y="86" text-anchor="middle" class="d-num">{esc(centro[0])}</text><text x="90" y="108" text-anchor="middle" class="d-txt">{esc(centro[1])}</text></svg>
+  <ul class="leyenda">{ley}</ul></div>
+</figure>'''
+
+
+def tarjeta_informe():
+    """Mini informe para la portada (ejemplo ilustrativo)."""
+    mx = max(v for _, v in EJ_SOPORTES)
+    cols = "".join(f'<i style="height:{round(v / mx * 100)}%;background:{PALETA[[4, 0, 3, 5, 1, 7][i]]}"></i>' for i, (_, v) in enumerate(EJ_SOPORTES))
+    return f'''<div class="informe-mini" role="img" aria-label="Ejemplo ilustrativo de informe: aportación de 10.000 euros, retorno de 40.000 euros, ROAS 4,0x y ROI del 300 %">
+  <div class="im-cab"><span class="logo-caja">NAROE</span><span>Informe ROI · ejemplo</span></div>
+  <div class="im-kpis"><div><small>Aportación</small><strong>10.000 €</strong></div><div><small>Retorno (VPE)</small><strong>40.000 €</strong></div></div>
+  <div class="im-barras" aria-hidden="true">{cols}</div>
+  <div class="im-pie"><div><small>ROAS</small><strong class="verde">4,0x</strong></div><div><small>ROI</small><strong class="verde">300 %</strong></div></div>
+</div>'''
+
+
 def inicio():
     servicios = ""
     for i, s in enumerate(SERVICIOS):
@@ -49,8 +100,9 @@ def inicio():
         externo = enlace.startswith("http")
         mas = (f'<a class="servicio-enlace" href="{esc(enlace)}">{"Ir a " + esc(enlace.split("//")[-1]) if externo else "Saber más"} {ICO["flecha"]}</a>'
                if enlace else "")
-        servicios += f'''<article class="servicio aparece" style="--c:{color}">
-      <h3>{esc(s.get("titulo"))}</h3><p>{esc(s.get("texto"))}</p>{mas}
+        img = imagen(s.get("imagen"), s.get("imagen_alt") or "", "(min-width: 1100px) 380px, (min-width: 700px) 45vw, 92vw", "servicio-foto")
+        servicios += f'''<article class="servicio aparece{" con-foto" if img else ""}" style="--c:{color}">
+      {img}<h3>{esc(s.get("titulo"))}</h3><p>{esc(s.get("texto"))}</p>{mas}
     </article>'''
 
     ld = json.dumps({
@@ -61,17 +113,18 @@ def inicio():
         "areaServed": "Canarias",
     }, ensure_ascii=False)
 
-    cuerpo = f'''<section class="portada">
-  <div class="contenedor">
-    <p class="antetitulo">Consultoría · Las Palmas de Gran Canaria</p>
-    <h1>Datos que demuestran<br>lo que vale un <span class="subraya">evento</span>.</h1>
-    <div class="portada-pie">
+    cuerpo = f'''<section class="portada portada-inicio">
+  <div class="contenedor portada-dos">
+    <div>
+      <p class="antetitulo">Consultoría · Las Palmas de Gran Canaria</p>
+      <h1>Datos que demuestran lo que vale un <span class="subraya">evento</span>.</h1>
       <p class="entradilla">Consultoría especializada en proyectos culturales, organización de eventos y valoración de patrocinios para administraciones públicas y entidades privadas.</p>
       <div class="botones">
         <a class="boton boton-negro" href="/roi/">ROI e impacto económico {ICO["flecha"]}</a>
         <a class="boton boton-linea" href="{mailto(CORREO, "Consulta desde la web")}">Escríbannos</a>
       </div>
     </div>
+    <div class="portada-visual">{tarjeta_informe()}</div>
   </div>
   {franja()}
 </section>
@@ -168,7 +221,9 @@ def roi():
     docs = "".join(f"<div><dt>{esc(t)}</dt><dd>{esc(d)}</dd></div>" for t, d in DOCUMENTOS)
     criterios = "".join(f"<li>{ICO['check']}<span>{esc(c)}</span></li>" for c in CRITERIOS)
 
-    cuerpo = f'''<section class="portada portada-roi">
+    fondo = portada_foto("confeti", "")
+    cuerpo = f'''<section class="portada portada-roi{" con-foto" if fondo else ""}">
+  {fondo}
   <div class="contenedor">
     <p class="antetitulo">Especial · ROI e impacto económico</p>
     <h1>Cuánto vuelve de cada euro de patrocinio.</h1>
@@ -201,6 +256,18 @@ def roi():
       </dl>
       <p class="ejemplo-nota">Cifras inventadas para explicar el cálculo; no corresponden a ningún cliente.</p>
     </div>
+  </div>
+</section>
+
+<section class="seccion" aria-labelledby="t-graficas">
+  <div class="contenedor">
+    <div class="cabecera-seccion"><p class="antetitulo">Así se ve un informe</p><h2 id="t-graficas">El retorno, soporte a soporte</h2>
+    <p class="entradilla">Cada informe muestra de dónde sale el retorno y, en los estudios de impacto, quién genera el gasto en el territorio.</p></div>
+    <div class="graficas">
+      {barras(EJ_SOPORTES, "Valor publicitario equivalente por soporte (ejemplo)")}
+      {donut(EJ_IMPACTO, "Reparto del impacto económico (ejemplo)", ("100 %", "impacto total"))}
+    </div>
+    <p class="ejemplo-nota">Gráficas con datos inventados para mostrar el formato; no corresponden a ningún cliente.</p>
   </div>
 </section>
 
