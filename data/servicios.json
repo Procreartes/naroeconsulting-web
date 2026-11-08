@@ -1,0 +1,38 @@
+[
+  {
+    "id": "roi",
+    "titulo": "ROI de patrocinios",
+    "texto": "Pre-ROI antes del evento e informe de retorno publicitario después: cuánto devuelve en visibilidad cada euro de patrocinio público o privado.",
+    "enlace": "/roi/"
+  },
+  {
+    "id": "impacto",
+    "titulo": "Estudios de impacto económico",
+    "texto": "Qué deja un festival o un evento en el territorio: gasto de público, organización y proveedores, empleo y retorno turístico.",
+    "enlace": "/roi/#impacto"
+  },
+  {
+    "id": "subvenciones",
+    "titulo": "Subvenciones y financiación",
+    "texto": "Búsqueda de financiación, preparación de solicitudes, memorias y justificaciones de subvenciones y patrocinios.",
+    "enlace": ""
+  },
+  {
+    "id": "eventos",
+    "titulo": "Consultoría para eventos y proyectos culturales",
+    "texto": "Planificación, viabilidad y dosieres técnicos de festivales y proyectos culturales, para administraciones públicas y entidades privadas.",
+    "enlace": ""
+  },
+  {
+    "id": "juventud",
+    "titulo": "Planes de juventud",
+    "texto": "Redacción y revisión de planes y estrategias de juventud para administraciones públicas.",
+    "enlace": ""
+  },
+  {
+    "id": "asociaciones",
+    "titulo": "Asociaciones",
+    "texto": "Asesoría, gestión y formación para asociaciones de todo tipo en Canarias, con packs y planes mensuales.",
+    "enlace": "https://asociacionescanarias.com"
+  }
+]

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://naroeconsulting.com/sitemap.xml

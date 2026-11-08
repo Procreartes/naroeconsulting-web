@@ -1,0 +1,110 @@
+/* ---- Naroe Consulting: blanco y negro con la paleta de la marca ---- */
+@font-face{font-family:"Manrope";font-weight:400;font-display:swap;src:url(/fonts/manrope-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Manrope";font-weight:600;font-display:swap;src:url(/fonts/manrope-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Manrope";font-weight:800;font-display:swap;src:url(/fonts/manrope-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-weight:500;font-display:swap;src:url(/fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2")}
+:root{
+  --negro:#111;--gris:#5a5a5a;--gris-claro:#f3f2ef;--rojo:#c7303e;--azul:#3257a8;--verde:#2b8a79;
+  --fondo:#fff;--tinta:var(--negro);--enlace:var(--azul);--foco:var(--azul);--linea:#e3e1dc;
+  --letra:"Manrope",system-ui,sans-serif;--letra-titulo:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+  --nav-fondo:rgba(255,255,255,.92);--menu-activo:var(--gris-claro);--pie-fondo:var(--negro);--pie-tinta:#eee;--radio-boton:4px
+}
+h1,h2,h3{font-weight:800;letter-spacing:-.03em}
+.antetitulo{font-family:var(--mono);font-weight:500;letter-spacing:.04em;color:var(--gris)}
+/* Logotipo en texto */
+.logo{display:inline-flex;align-items:center;gap:.45rem;font-weight:800;line-height:1}
+.logo-caja{background:var(--negro);color:#fff;padding:.38rem .5rem .32rem;font-size:1.05rem;letter-spacing:.06em}
+.logo-txt{font-size:.62rem;letter-spacing:.32em;font-weight:600}
+.logo-pie .logo-caja{background:#fff;color:var(--negro)}
+.boton-negro{background:var(--negro);color:#fff}
+.boton-negro:hover{background:#333}
+.boton-linea{border-color:var(--negro);color:var(--negro)}
+.boton-linea:hover{background:var(--negro);color:#fff}
+.boton-blanco{background:#fff;color:var(--negro)}
+.franja{display:grid;grid-template-columns:repeat(9,1fr);height:10px}
+.franja i{display:block}
+.cabecera-seccion{max-width:780px;margin-bottom:2.6rem}
+.cabecera-seccion h2,.nosotros h2,.cifras-grid h2,.docs-grid h2,.criterios h2,.especial h2{font-size:clamp(1.9rem,4vw,3rem)}
+
+/* Portada */
+.portada{padding-top:clamp(3.5rem,9vw,7rem)}
+.portada h1{font-size:clamp(2.6rem,7.5vw,6rem);line-height:1;margin-bottom:2.4rem}
+.subraya{background:linear-gradient(transparent 62%,#f4cf70 62%,#f4cf70 92%,transparent 92%)}
+.portada-pie{display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:end;padding-bottom:clamp(3rem,7vw,5rem)}
+.portada-pie .entradilla{color:var(--gris);margin:0}
+.portada-pie .botones{justify-content:flex-end}
+@media (max-width:820px){.portada-pie{grid-template-columns:1fr}.portada-pie .botones{justify-content:flex-start}}
+
+/* Servicios */
+.servicios{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));border-top:1px solid var(--linea);border-left:1px solid var(--linea)}
+.servicio{padding:2rem 1.8rem 2.2rem;border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);position:relative;display:flex;flex-direction:column}
+.servicio::before{content:"";display:block;width:34px;height:8px;background:var(--c);margin-bottom:1.4rem}
+.servicio h3{font-size:1.35rem}
+.servicio p{color:var(--gris)}
+.servicio-enlace{margin-top:auto;display:inline-flex;gap:.4rem;align-items:center;font-weight:800;color:var(--negro);text-decoration:none;border-bottom:2px solid var(--c);align-self:flex-start;padding-bottom:2px;word-break:break-all}
+.servicio-enlace svg{width:1rem;height:1rem}
+
+/* Especial (bloque negro) */
+.seccion-negra{background:var(--negro);color:#f4f4f4}
+.seccion-negra .antetitulo{color:#f4cf70}
+.seccion-negra p{color:#cfcfcf}
+.especial{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center}
+.formula{margin:0;display:grid;gap:1px;background:#333;border:1px solid #333}
+.formula div{background:var(--negro);padding:1.3rem 1.5rem;display:flex;justify-content:space-between;gap:1rem;align-items:baseline;flex-wrap:wrap}
+.formula dt{font-family:var(--mono);font-size:1.7rem;color:#fff}
+.formula dd{margin:0;color:#cfcfcf}
+@media (max-width:820px){.especial{grid-template-columns:1fr}}
+
+/* Quiénes somos */
+.nosotros{display:grid;grid-template-columns:1fr 1.3fr;gap:3rem}
+.nosotros p{color:var(--gris)}
+.nosotros .entradilla{color:var(--negro);font-weight:600}
+@media (max-width:820px){.nosotros{grid-template-columns:1fr;gap:1rem}}
+
+/* Contacto */
+.contacto-caja{border:1px solid var(--linea);padding:0 clamp(1.5rem,5vw,3.5rem) clamp(2rem,5vw,3.5rem);text-align:center}
+.contacto-caja .franja{margin:0 calc(-1 * clamp(1.5rem,5vw,3.5rem)) clamp(2rem,5vw,3rem)}
+.contacto-caja h2{font-size:clamp(1.7rem,3.6vw,2.6rem);max-width:24ch;margin-inline:auto}
+.contacto-caja p{color:var(--gris)}
+.contacto-caja .boton{word-break:break-all}
+
+/* Especial ROI */
+.informes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1.2rem}
+.informe{border:1px solid var(--linea);border-top:8px solid var(--c);padding:1.8rem;scroll-margin-top:90px}
+.informe-cuando{font-family:var(--mono);font-size:.85rem;color:var(--gris);margin-bottom:.4rem}
+.informe h3{font-size:1.5rem}
+.informe p{color:var(--gris)}
+.informe ul{margin:0;padding-left:1.1rem;display:grid;gap:.3rem;font-weight:600}
+.seccion-gris{background:var(--gris-claro)}
+.cifras-grid,.docs-grid,.criterios{display:grid;grid-template-columns:1fr 1.1fr;gap:3rem;align-items:start}
+.cifras-grid p,.docs-grid p,.criterios p{color:var(--gris)}
+.ejemplo{background:#fff;border:1px solid var(--linea);padding:1.6rem}
+.ejemplo-titulo{font-family:var(--mono);font-size:.85rem;color:var(--gris)}
+.ejemplo dl{margin:0}
+.ejemplo dl div{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--linea);align-items:baseline;flex-wrap:wrap}
+.ejemplo dt{color:var(--gris)}
+.ejemplo dd{margin:0;font-family:var(--mono);font-size:1.25rem}
+.ejemplo .destaca dt{color:var(--negro);font-weight:700}
+.ejemplo .destaca dd{font-size:1.6rem;color:var(--verde)}
+.ejemplo-nota{font-size:.85rem;color:var(--gris);margin:1rem 0 0}
+.pasos{list-style:none;margin:0;padding:0;counter-reset:p;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1.2rem}
+.pasos li{counter-increment:p;border-top:2px solid var(--negro);padding-top:1.2rem}
+.pasos li::before{content:counter(p,decimal-leading-zero);font-family:var(--mono);font-size:1.6rem;display:block;margin-bottom:.6rem}
+.pasos h3{font-size:1.2rem}
+.pasos p{color:var(--gris);margin:0}
+.docs{margin:0;display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea)}
+.docs div{background:#fff;padding:1.1rem 1.3rem}
+.docs dt{font-weight:800}
+.docs dd{margin:.2rem 0 0;color:var(--gris)}
+.lista-check{list-style:none;margin:0;padding:0;display:grid;gap:.9rem}
+.lista-check li{display:flex;gap:.7rem;align-items:flex-start}
+.lista-check svg{flex:none;width:1.3rem;height:1.3rem;color:var(--verde);margin-top:.15rem}
+.indep h2{font-size:clamp(1.8rem,3.5vw,2.6rem)}
+.indep p{font-size:1.15rem}
+@media (max-width:820px){.cifras-grid,.docs-grid,.criterios{grid-template-columns:1fr;gap:1.5rem}}
+
+/* Pie */
+.pie-arriba{display:grid;grid-template-columns:1.3fr 1fr;gap:2rem}
+.pie-arriba .logo{margin-bottom:1rem}
+.pie-nota{opacity:.75;font-size:.9rem}
+@media (max-width:700px){.pie-arriba{grid-template-columns:1fr}}
