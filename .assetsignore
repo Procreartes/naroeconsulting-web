@@ -8,3 +8,6 @@ scripts
 data
 css/base.css
 css/tema.css
+Dockerfile
+nginx.conf
+.dockerignore
