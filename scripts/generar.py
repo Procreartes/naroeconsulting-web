@@ -2,7 +2,7 @@
 """Genera la web de Naroe Consulting (naroeconsulting.com) y su especial de ROI e impacto económico (/roi/).
 
 Uso:  python3 scripts/generar.py
-Datos editables (Gestor de webs del portal o a mano): data/servicios.json
+Datos editables (Gestor de webs del portal o a mano): data/servicios.json, data/perfil.json
 No edites los .html a mano: se sobrescriben.
 """
 import json
@@ -35,6 +35,8 @@ S = Sitio(
 )
 
 SERVICIOS = datos("servicios.json", [])
+# Trayectoria en «Quiénes somos»: {texto, especialidades, entidades, reconocimientos} (listas: una por línea)
+PERFIL = datos("perfil.json", {})
 
 
 def franja():
@@ -90,6 +92,14 @@ def tarjeta_informe():
   <div class="im-barras" aria-hidden="true">{cols}</div>
   <div class="im-pie"><div><small>ROAS</small><strong class="verde">4,0x</strong></div><div><small>ROI</small><strong class="verde">300 %</strong></div></div>
 </div>'''
+
+
+def trayectoria():
+    lineas = lambda k: [x for x in str(PERFIL.get(k, "")).splitlines() if x.strip()]
+    bloques = [("Áreas de trabajo", lineas("especialidades")), ("Asociaciones que ha dirigido", lineas("entidades")),
+               ("Reconocimientos", lineas("reconocimientos"))]
+    cajas = "".join(f'<div class="tray-bloque"><h3>{esc(t)}</h3><ul>{"".join(f"<li>{esc(x)}</li>" for x in l)}</ul></div>' for t, l in bloques if l)
+    return f'<div class="trayectoria">{cajas}</div>' if cajas else ""
 
 
 def inicio():
@@ -158,7 +168,9 @@ def inicio():
     <div>
       <p class="entradilla">Naroe Consulting nace de la experiencia de dirigir festivales y proyectos culturales de gran formato en Canarias.</p>
       <p>Su director técnico, Naroe Valls O’Shanahan, suma más de veinticinco años de trayectoria en la dirección de festivales y proyectos culturales, y ha elaborado, supervisado y certificado informes técnicos de ROI e impacto económico para administraciones públicas y promotores privados.</p>
+      <p>{esc(PERFIL.get("texto", ""))}</p>
       <p>Por eso sabemos qué pide cada convocatoria, qué documentación sirve de verdad y cómo presentar un proyecto para que se entienda a la primera.</p>
+      {trayectoria()}
     </div>
   </div>
 </section>
